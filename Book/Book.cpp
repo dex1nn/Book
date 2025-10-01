@@ -1,6 +1,5 @@
 #include <iostream>
 
-
 using namespace std;
 
 class Book {
@@ -17,7 +16,7 @@ public:
         delete[] publisher;
     }
 
-    Book(const char* author, const char* name_book, const char* publisher, short int year, int pages) {
+    explicit Book(const char* author, const char* name_book, const char* publisher, short int year, int pages) {
         SetAutor(author);
         SetNameBook(name_book);
         SetPublisher(publisher);
@@ -59,19 +58,64 @@ public:
     int getYear() const { return year; }
 };
 
+
+void BooksByAuthor(const Book books[], int size, const char* author) {
+    bool found = false;
+    for (int i = 0; i < size; i++) {
+        if (strcmp(books[i].getAutor(), author) == 0) {
+            books[i].ShowBook();
+            cout << endl;
+            found = true;
+        }
+    }
+    if (!found) cout << "No books found." << endl;
+}
+
+void BooksByPublisher(const Book books[], int size, const char* publisher) {
+    bool found = false;
+    for (int i = 0; i < size; i++) {
+        if (strcmp(books[i].getPublisher(), publisher) == 0) {
+            books[i].ShowBook();
+            cout << endl;
+            found = true;
+        }
+    }
+    if (!found) cout << "No books found." << endl;
+}
+
+void BooksAfterYear(const Book books[], int size, int year) {
+    bool found = false;
+    for (int i = 0; i < size; i++) {
+        if (books[i].getYear() > year) {
+            books[i].ShowBook();
+            cout << endl;
+            found = true;
+        }
+    }
+    if (!found) cout << "No books found." << endl;
+}
+
 int main() {
-    Book books[5] = {
-        Book("Itstep", "cppppppp", "Itstep", 1999, 253),
-        Book("Itste", "cpppppp", "Itste", 1998, 263),
-        Book("Itst", "cppppp", "Itst", 1997, 273),
-        Book("Its", "cpppp", "Its", 1996, 283),
-        Book("It", "cppp", "It", 1995, 293)
+    const int SIZE = 5;
+    Book books[SIZE] = {
+        Book("Itstep", "C++ Basics", "StepPress", 1999, 253),
+        Book("Smith", "OOP in C++", "TechBooks", 2005, 320),
+        Book("Brown", "Algorithms", "StepPress", 2010, 500),
+        Book("Smith", "Data Structures", "UniBooks", 2015, 410),
+        Book("Clark", "C++ Advanced", "TechBooks", 2020, 600)
     };
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < SIZE; i++) {
         books[i].ShowBook();
         cout << endl;
     }
+
+    cout << "BooksByAuthor:\n";
+    BooksByAuthor(books, SIZE, "Smith");
+    cout << "BooksByPublisher:\n";
+    BooksByPublisher(books, SIZE, "StepPress");
+    cout << "BooksAfterYear:\n";
+    BooksAfterYear(books, SIZE, 2000);
 
     return 0;
 }
